@@ -54,7 +54,16 @@ function App() {
 
   // functionality for pagination
   // const itemsPerPage = 10
+  const totalPages = Math.ceil(sortedCountries.length / itemsPerPage)
+  const pageNumbers = [...Array(totalPages).keys()]
+  const lastItem = itemsPerPage * currentPage
+  const firstItem = lastItem - itemsPerPage
 
+  const countriesInPage = sortedCountries.slice(firstItem, lastItem)
+  console.log(pageNumbers)
+  const moveToPages = (page) => {
+    setCurrentPage(page)
+  }
 
 
   return (
@@ -84,7 +93,17 @@ function App() {
         {countriesInPage.map((country, index) => <ListItem key={country.name}
           index={index} country={country} ></ListItem>)}
       </div>
-
+      <footer className='py-8 text-center'>
+        <details className=" dropdown dropdown-end dropdown-left">
+          <summary className="m-1 btn">Countries</summary>
+          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-20">
+            <li><button onClick={() => setItemsPerPage(20)}>20</button></li>
+            <li><button onClick={() => setItemsPerPage(30)}>30</button></li>
+            <li><button onClick={() => setItemsPerPage(40)}>40</button></li>
+          </ul>
+        </details>
+        {pageNumbers.map((page, index) => <button className='btn ms-1 rounded-3xl' onClick={() => moveToPages(page + 1)} key={index}>{page + 1}</button>)}
+      </footer>
     </section>
   )
 }
